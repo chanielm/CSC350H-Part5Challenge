@@ -25,9 +25,16 @@ string player = states[0];
 int food = 0;
 
 InitializeGame();
-while (!shouldExit) 
+while (!shouldExit)
 {
-    Move();
+    if (TerminalResized())
+    {
+        shouldExit = true;
+        Console.WriteLine("\nConsole was resized. Program Exiting.");
+    }
+    else {
+        Move();
+    }
 }
 
 // Returns true if the Terminal was resized 
@@ -67,7 +74,7 @@ void FreezePlayer()
 }
 
 // Reads directional input from the Console and moves the player
-void Move() 
+void Move(bool TermOnOtherKeys = false) 
 {
     int lastX = playerX;
     int lastY = playerY;
@@ -86,8 +93,11 @@ void Move()
 		case ConsoleKey.RightArrow: 
             playerX++; 
             break;
-		case ConsoleKey.Escape:     
+		case ConsoleKey.Escape:
             shouldExit = true; 
+            break;
+        default:
+            shouldExit = TermOnOtherKeys;
             break;
     }
 

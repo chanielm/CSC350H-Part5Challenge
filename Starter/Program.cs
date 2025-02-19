@@ -34,7 +34,10 @@ while (!shouldExit)
         Console.WriteLine("\nConsole was resized. Program Exiting.");
     }
     else {
-        Move();
+        if (PlayerIsFrozen()) FreezePlayer();
+        else if (PlayerIsFast()) Move(MovSpeed: 1, TermOnOtherKeys: false);
+        else Move(TermOnOtherKeys: false);
+
         if (AteFood())
         {
             ChangePlayer();
@@ -77,6 +80,16 @@ void ChangePlayer()
     Console.Write(player);
 }
 
+bool PlayerIsFrozen()
+{
+    return player.Equals("(X_X)");
+}
+
+bool PlayerIsFast()
+{
+    return player.Equals("(^-^)");
+}
+
 // Temporarily stops the player from moving
 void FreezePlayer() 
 {
@@ -85,7 +98,7 @@ void FreezePlayer()
 }
 
 // Reads directional input from the Console and moves the player
-void Move(bool TermOnOtherKeys = false) 
+void Move(int MovSpeed = 1, bool TermOnOtherKeys = false) 
 {
     int lastX = playerX;
     int lastY = playerY;
@@ -99,10 +112,10 @@ void Move(bool TermOnOtherKeys = false)
             playerY++; 
             break;
 		case ConsoleKey.LeftArrow:  
-            playerX--; 
+            playerX -= MovSpeed; 
             break;
 		case ConsoleKey.RightArrow: 
-            playerX++; 
+            playerX += MovSpeed; 
             break;
 		case ConsoleKey.Escape:
             shouldExit = true; 

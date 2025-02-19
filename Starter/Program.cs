@@ -30,11 +30,22 @@ while (!shouldExit)
     if (TerminalResized())
     {
         shouldExit = true;
+        Console.Clear();
         Console.WriteLine("\nConsole was resized. Program Exiting.");
     }
     else {
         Move();
+        if (AteFood())
+        {
+            ChangePlayer();
+            ShowFood();
+        }
     }
+}
+
+bool AteFood()
+{
+    return (playerX == foodX && playerY == foodY);
 }
 
 // Returns true if the Terminal was resized 
